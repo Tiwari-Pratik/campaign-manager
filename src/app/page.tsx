@@ -1,4 +1,5 @@
 import AddCampaign from "./myComponents/addCampaign";
+import CampaignsList from "./myComponents/campaignsList";
 
 export default function Home() {
   return (
@@ -10,7 +11,7 @@ export default function Home() {
         <AddCampaign />
       </section>
       <section>
-        {/* Display Campaigns List  */}
+        <CampaignsList />
       </section>
     </main>
   );
