@@ -6,7 +6,6 @@ import { editCampaign } from "@/actions/campaignActions"
 import { useEffect, useState } from "react"
 import { DateRange } from "react-day-picker"
 import { Select, SelectItem, SelectGroup, SelectLabel, SelectValue, SelectContent, SelectTrigger } from "@/components/ui/select"
-import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import TimePicker from "./timePicker"
 import { campaignState } from "@/lib/campaignSchema"
@@ -78,7 +77,7 @@ const EditCampaignForm = ({ toggle, campaign }: Props) => {
 
   }, [state?.message])
 
-  console.log({ schedules })
+  // console.log({ schedules })
   const addDates = (date: DateRange | undefined) => {
     setCampaignDates(date)
   }

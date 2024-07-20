@@ -35,7 +35,7 @@ const DatePicker = ({
     to: new Date(defaultEndDate),
   })
 
-  console.log(date)
+  // console.log(date)
 
   useEffect(() => {
     addDate(date)

@@ -5,7 +5,7 @@ import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
 const convertTo24HourFormat = (timeString: string) => {
-  console.log(timeString)
+  // console.log(timeString)
   let hour = parseInt(timeString.split(" ")[0].split(":")[0]);
   const minute = parseInt(timeString.split(" ")[0].split(":")[1], 10);
   const period = timeString.split(" ")[1]
@@ -20,7 +20,7 @@ const convertTo24HourFormat = (timeString: string) => {
   // Format hour and minute to 2 digits
   const hourStr = hour.toString().padStart(2, '0');
   const minuteStr = minute.toString().padStart(2, '0');
-  console.log(`${hourStr}:${minuteStr}`)
+  // console.log(`${hourStr}:${minuteStr}`)
 
   return `${hourStr}:${minuteStr}:00`;
 }
@@ -61,8 +61,8 @@ export const addCampaign = async (prevState: campaignState | undefined, formData
     schedule
   })
   if (!validatedFields.success) {
-    console.log(JSON.stringify(validatedFields.error, null, 3))
-    console.log(validatedFields.error.flatten().fieldErrors)
+    // console.log(JSON.stringify(validatedFields.error, null, 3))
+    // console.log(validatedFields.error.flatten().fieldErrors)
     return {
       message: "Error. Failed to validate inputs!",
       errors: validatedFields.error.flatten().fieldErrors,
@@ -95,8 +95,8 @@ export const addCampaign = async (prevState: campaignState | undefined, formData
 }
 
 export const editCampaign = async (id: string, prevState: campaignState | undefined, formData: FormData) => {
-  console.log("calling edit campaign")
-  console.log(formData)
+  // console.log("calling edit campaign")
+  // console.log(formData)
 
   const campaignType = formData.get("campaign")
   const dateRange = formData.get("date")
@@ -131,8 +131,8 @@ export const editCampaign = async (id: string, prevState: campaignState | undefi
     schedule
   })
   if (!validatedFields.success) {
-    console.log(JSON.stringify(validatedFields.error, null, 3))
-    console.log(validatedFields.error.flatten().fieldErrors)
+    // console.log(JSON.stringify(validatedFields.error, null, 3))
+    // console.log(validatedFields.error.flatten().fieldErrors)
     return {
       message: "Error. Failed to validate inputs!",
       errors: validatedFields.error.flatten().fieldErrors,
@@ -144,16 +144,6 @@ export const editCampaign = async (id: string, prevState: campaignState | undefi
   const campaignStartDate = validatedFields.data?.campaignStartDate
   const campaignEndDate = validatedFields.data?.campaignEndDate
   const campaignSchedule = validatedFields.data?.schedule
-  console.log(
-
-    {
-      id,
-      campaignType: typeOfCampaign,
-      campaignStartDate,
-      campaignEndDate,
-      schedule: campaignSchedule
-    }
-  )
 
   try {
     await prisma.campaign.update({

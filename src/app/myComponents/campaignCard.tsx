@@ -1,6 +1,7 @@
 import { Campaign } from "@prisma/client";
 import { Card, CardHeader, CardContent } from "@/components/ui/card"
 import EditCampaign from "./editCampaign";
+import { getUserLocale } from "get-user-locale"
 
 interface Props {
   campaign: Campaign
@@ -10,10 +11,8 @@ interface Props {
 const convertToLocaleDateString = (dateString: string) => {
   const date = new Date(dateString);
 
-  // Step 2: Get the user's locale dynamically
-  const userLocale = 'en-US';
+  const userLocale = getUserLocale() || 'en-US';
 
-  // Step 3: Use toLocaleDateString with the dynamic locale
   const localeDateString = date.toLocaleDateString(userLocale, { year: "numeric", month: "long", day: "numeric" });
   return localeDateString
 }
@@ -47,7 +46,7 @@ function getNextActivationDay(startDate: string, endDate: string, schedule: { da
   const start = new Date(startDate);
   const end = new Date(endDate);
 
-  // Check if the current date is within the campaign period
+  // Check if the current date is less than the campaign end date
   if (currentDate > end) {
     return null; // Campaign is not active
   }

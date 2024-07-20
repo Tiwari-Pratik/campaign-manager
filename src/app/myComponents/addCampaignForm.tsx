@@ -47,7 +47,7 @@ const AddCampaignForm = ({ toggle }: Props) => {
 
   }, [state?.message])
 
-  console.log({ schedules })
+  // console.log({ schedules })
   const addDates = (date: DateRange | undefined) => {
     setCampaignDates(date)
   }
