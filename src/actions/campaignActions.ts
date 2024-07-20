@@ -94,5 +94,84 @@ export const addCampaign = async (prevState: campaignState | undefined, formData
   return { message: "success" }
 }
 
+export const editCampaign = async (id: string, prevState: campaignState | undefined, formData: FormData) => {
+  console.log("calling edit campaign")
+  console.log(formData)
+
+  const campaignType = formData.get("campaign")
+  const dateRange = formData.get("date")
+  if (typeof dateRange !== "string") return
+  if (!dateRange) return
+  const startDate = JSON.parse(dateRange)?.from
+  const endDate = JSON.parse(dateRange)?.to
+
+  const schedule: { day: string, startTime: string, endTime: string }[] = []
+  const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+  daysOfWeek.forEach((day) => {
+
+    const scheduledDay = formData.get(day)
+    if (scheduledDay === "on") {
+      const startTime = formData.get(`${day}-startTime`)
+      if (typeof startTime !== "string") return
+      if (!startTime) return
+      const endTime = formData.get(`${day}-endTime`)
+      if (typeof endTime !== "string") return
+      if (!endTime) return
+
+      schedule.push({ day, startTime: convertTo24HourFormat(startTime.replaceAll('"', '')), endTime: convertTo24HourFormat(endTime.replaceAll('"', '')) })
+    }
+  })
+
+  // console.log({ campaignType, startDate, endDate, schedule })
+
+  const validatedFields = CampaignSchema.safeParse({
+    campaignType,
+    campaignStartDate: startDate,
+    campaignEndDate: endDate,
+    schedule
+  })
+  if (!validatedFields.success) {
+    console.log(JSON.stringify(validatedFields.error, null, 3))
+    console.log(validatedFields.error.flatten().fieldErrors)
+    return {
+      message: "Error. Failed to validate inputs!",
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+
+  }
+
+  const typeOfCampaign = validatedFields.data?.campaignType
+  const campaignStartDate = validatedFields.data?.campaignStartDate
+  const campaignEndDate = validatedFields.data?.campaignEndDate
+  const campaignSchedule = validatedFields.data?.schedule
+  console.log(
+
+    {
+      id,
+      campaignType: typeOfCampaign,
+      campaignStartDate,
+      campaignEndDate,
+      schedule: campaignSchedule
+    }
+  )
+
+  try {
+    await prisma.campaign.update({
+      where: { id },
+      data: {
+        campaignType: typeOfCampaign,
+        campaignStartDate,
+        campaignEndDate,
+        schedule: campaignSchedule
+      }
+    })
+  } catch (error) {
+    return {
+      message: "Database Error: failed to create campaign",
+    };
+  }
+  revalidatePath("/")
+  return { message: "success" }
+}
 
 

@@ -1,5 +1,6 @@
 import { Campaign } from "@prisma/client";
 import { Card, CardHeader, CardContent } from "@/components/ui/card"
+import EditCampaign from "./editCampaign";
 
 interface Props {
   campaign: Campaign
@@ -87,7 +88,7 @@ const CampaignCard = ({ campaign }: Props) => {
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm font-medium">{campaign.campaignType}</div>
-          {/* EditCampaign button  */}
+          <EditCampaign campaign={campaign} />
         </div>
       </CardHeader>
       <CardContent className="space-y-2">
